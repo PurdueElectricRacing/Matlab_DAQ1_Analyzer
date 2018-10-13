@@ -86,7 +86,7 @@ function DAQ1_f( log_file )
     title('Steering Angle Plot');
     xlabel('Time [seconds]');
     ylabel('Degrees [+ Left, - Right]');
-    ylim([-76, 70]); %TODO confirm actual values
+    ylim([-80, 80]); %TODO confirm actual values
 
 end
 

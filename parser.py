@@ -32,6 +32,7 @@ def steerparsemsg(msg):
 
 if __name__ == '__main__':
 	filename = sys.argv[1]
+	#filename = '2018_10_13_0_15_17.txt'
 	now = datetime.datetime.now()
 	now = now.strftime('%d-%m-%Y')
 	acc_x = []
@@ -46,7 +47,7 @@ if __name__ == '__main__':
 	with open(filename, 'r') as f:
 		for line in f:
 			try:
-				timestamp, CANid, _, msg = line.split(',');
+				timestamp, CANid, _, msg = line.split(',')
 			except:
 				pass
 			else:
