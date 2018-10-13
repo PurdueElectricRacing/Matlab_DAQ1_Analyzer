@@ -53,7 +53,9 @@ function DAQ1_f( log_file )
         size_z_accel(:, 1), size_x_gyro(:, 1), size_y_gyro(:, 1)...
         , size_z_gyro(:, 1)]);
     
-    subplot(3,1,1); %Accel Plot
+    %subplot(3,1,1); %Accel Plot
+    figure(1);
+    hold on;
     plot(accel_x(1:min_size,1) / 1000, accel_x_car(1:min_size));
     hold on;
     plot(accel_y(1:min_size,1) / 1000, accel_y_car(1:min_size));
@@ -66,7 +68,9 @@ function DAQ1_f( log_file )
     legend('X', 'Y', 'Z');
     ylim([-4, 4]);
     
-    subplot(3,1,2); %Gyro Plot
+    %subplot(3,1,2); %Gyro Plot
+    figure(2);
+    hold on;
     plot(gyro_x(1:min_size,1) / 1000, gyro_x_car(1:min_size));
     hold on;
     plot(gyro_y(1:min_size,1) / 1000, gyro_y_car(1:min_size));
@@ -79,14 +83,15 @@ function DAQ1_f( log_file )
     legend('X', 'Y', 'Z');
     ylim([-245, 245]);
 
-    subplot(3,1,3); %Steering Angle Plot
+    %subplot(3,1,3); %Steering Angle Plot
+    figure(3);
+    hold on;
     steer_deg = steer(:,2) * (70 +76) -76;
-    plot(steer(:,1), steer_deg);
+    plot(steer(:,1) / 1000, steer_deg);
     grid on;
     title('Steering Angle Plot');
     xlabel('Time [seconds]');
     ylabel('Degrees [+ Left, - Right]');
     ylim([-80, 80]); %TODO confirm actual values
-
 end
 
