@@ -12,10 +12,10 @@ def imuparsemsg(msg):
 	try:
 		sensor = int(msg[0:2])
 		x = s16('0x' + msg[2:6])
-		y = s16('0x' + msg[7:11])
-		z = s16('0x' + msg[12:])
+		y = s16('0x' + msg[6:10])
+		z = s16('0x' + msg[10:-1])
 	except:
-		sensor = 'XX'
+		sensor = -1
 		x = 'XXXX'
 		y = 'XXXX'
 		z = 'XXXX'
@@ -35,8 +35,8 @@ def steerparsemsg(msg):
 	return data
 
 if __name__ == '__main__':
-	filename = sys.argv[1]
-	#filename = '2018_10_13_0_15_17.txt'
+	#filename = sys.argv[1]
+	filename = '2018_10_12_1_26_8.txt'
 	now = datetime.datetime.now()
 	now = now.strftime('%d-%m-%Y')
 	acc_x = []
@@ -63,10 +63,10 @@ if __name__ == '__main__':
 							imu[0].append((timestamp, str(data[0]))) #x
 							imu[1].append((timestamp, str(data[1]))) #y
 							imu[2].append((timestamp, str(data[2]))) #z
-						else: #gyro
-							imu[4].append((timestamp, str(data[0]))) #x
-							imu[5].append((timestamp, str(data[1]))) #y
-							imu[6].append((timestamp, str(data[2]))) #z
+						elif (sensor == 1): #gyro
+							imu[3].append((timestamp, str(data[0]))) #x
+							imu[4].append((timestamp, str(data[1]))) #y
+							imu[5].append((timestamp, str(data[2]))) #z
 					except:
 						pass
 				if CANid == '422':
