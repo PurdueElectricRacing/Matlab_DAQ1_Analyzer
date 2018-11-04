@@ -11,11 +11,15 @@ def s16(value):
 def imuparsemsg(msg):
 	try:
 		sensor = int(msg[0:2])
-		data = s16('0x' + msg[2:6])
+		x = s16('0x' + msg[2:6])
+		y = s16('0x' + msg[7:11])
+		z = s16('0x' + msg[12:])
 	except:
 		sensor = 'XX'
-		data = 'XXXX'
-	return sensor, data
+		x = 'XXXX'
+		y = 'XXXX'
+		z = 'XXXX'
+	return sensor, (x, y, z)
 
 def steerparsemsg(msg):
 	data = 'XXXX'
@@ -55,7 +59,14 @@ if __name__ == '__main__':
 				if CANid == '421':
 					sensor, data = imuparsemsg(msg)
 					try:
-						imu[sensor].append((timestamp, str(data)))
+						if sensor == 0: #sensor
+							imu[0].append((timestamp, str(data[0]))) #x
+							imu[1].append((timestamp, str(data[1]))) #y
+							imu[2].append((timestamp, str(data[2]))) #z
+						else: #gyro
+							imu[4].append((timestamp, str(data[0]))) #x
+							imu[5].append((timestamp, str(data[1]))) #y
+							imu[6].append((timestamp, str(data[2]))) #z
 					except:
 						pass
 				if CANid == '422':
