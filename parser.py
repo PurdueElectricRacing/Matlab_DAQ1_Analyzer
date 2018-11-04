@@ -34,9 +34,20 @@ def steerparsemsg(msg):
 		pass
 	return data
 
+def bmsparsemsg(msg):
+	try:
+		current = s16('0x' + msg[0:4])
+		volt = s16('0x' + msg[4:8])
+		soc = s16('0x' + msg[8:10])
+	except:
+		current = ''
+		volt = ''
+		soc = ''
+	return (current, volt, soc)
+
 if __name__ == '__main__':
-	#filename = sys.argv[1]
-	filename = '2018_10_12_1_26_8.txt'
+	filename = sys.argv[1]
+	#filename = '2018_10_12_1_26_8.txt'
 	now = datetime.datetime.now()
 	now = now.strftime('%d-%m-%Y')
 	acc_x = []
@@ -48,6 +59,11 @@ if __name__ == '__main__':
 	imu = [acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z]
 	imuname = ['acc_x', 'acc_y', 'acc_z', 'gyro_x', 'gyro_y', 'gyro_z']
 	steer = []
+	bms_volt = []
+	bms_curr = []
+	bms_soc = []
+	bms = [bms_curr, bms_volt, bms_soc]
+	bms_name = ['bms_curr', 'bms_volt', 'bms_soc']
 	with open(filename, 'r') as f:
 		for line in f:
 			try:
@@ -56,7 +72,7 @@ if __name__ == '__main__':
 				pass
 			else:
 				msg.strip()
-				if CANid == '421':
+				if CANid == '421': #imu
 					sensor, data = imuparsemsg(msg)
 					try:
 						if sensor == 0: #sensor
@@ -69,10 +85,18 @@ if __name__ == '__main__':
 							imu[5].append((timestamp, str(data[2]))) #z
 					except:
 						pass
-				if CANid == '422':
+				if CANid == '422': #steering angle
 					data = steerparsemsg(msg)
 					try:
 						steer.append((timestamp, str(data)))
+					except:
+						pass
+				if CANid == '6B0': #BMS pack_current, pack_voltage, SOC
+					data = bmsparsemsg(msg)
+					try:
+						bms[0].append((timestamp, str(data[0]))) #current
+						bms[1].append((timestamp, str(data[1]))) #volt
+						bms[2].append((timestamp, str(data[2]))) #soc
 					except:
 						pass
 	for i in range(6):
@@ -82,3 +106,7 @@ if __name__ == '__main__':
 	with open(now + '_steer' + '.csv', 'wb') as f:
 		for i in steer:
 			f.write(i[0] + ',' + i[1] + '\n')
+	for i in range(3):
+		with open(now + '_' + bms_name[i] + '.csv', 'wb') as f:
+			for j in bms[i]:
+				f.write(j[0] + ',' + j[1] + '\n')
