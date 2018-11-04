@@ -113,11 +113,11 @@ function DAQ1_f( log_file )
     gyro_y(:,2) = gyro_y(:,2) * 8.75 / 1000;
     gyro_z(:,2) = gyro_z(:,2) * 8.75 / 1000;
 
-    %Convert BMS Current to acutal Current (Multiply by 10)
-    bms_curr(:, 2) = bms_curr(:,2) * 10;
+    %Convert BMS Current to acutal Current (divide by 10)
+    bms_curr(:, 2) = bms_curr(:,2) * .1;
     
-    %Convert BMS Voltage to acutal Voltage (Multiply by 10)
-    bms_volt(:, 2) = bms_volt(:,2) * 10;
+    %Convert BMS Voltage to acutal Voltage (divide by 10)
+    bms_volt(:, 2) = bms_volt(:,2) * .1;
     
     %Convert BMS SOC to actual SOC (each number is half a percent)
     bms_soc(:,2) = bms_soc(:,2) * .5;
